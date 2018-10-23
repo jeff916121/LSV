@@ -1,0 +1,32 @@
+
+PA1 part2
+
+
+The submission should follow the format in the sample in the attached file. 
+
+There are four part:
+
+1. A directory ext_<student_id>/ 
+	contains all the source code of your "lsv_cmd". Note that this extension directory 
+        can be put under the path abc/src/ and use "make" to compile. Remember to modify 
+        the "SRC" path in the file "module.make". 
+
+2. a README file briefly describe what you do in your code and special compilation method if there is any.
+
+3. input/fa4.blif : a sample input .blif file
+
+4. output/pa1_d06943013.txt: a sample output .txt file
+.
+
+	Format of the output file:
+
+List all the XOR gate you found in the network by node id
+
+( <node id> ) = xor( <node id> , <node id> )
+
+
+Example:
+(5) = xor( 3 , 2 )
+(14) = xor( ~4 , 7 )
+Add a symbol "~" for a negated input. 
+
