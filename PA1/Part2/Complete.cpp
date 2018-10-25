@@ -27,10 +27,20 @@ int Abc_LsvCommandLsvXai(Abc_Frame_t * pAbc, int argc, char ** argv )
    
 
     int visitandMark [Abc_NtkObjNum(pNtk)];
+    //visitandMark[j]=0 means haven't been visited
+    //visitandMark[j]=1 means have been visited and don't want to do anything
+    //visitandMark[j]=2 means this node is AND gate
+    //visitandMark[j]=3 means this node is XOR gate
+    //visitandMark[j]=4 means this node is XNOR gate
+    
     int j;
     for(j=0;j<Abc_NtkObjNum(pNtk);j++){
         visitandMark[j]=0;
     }
+
+    
+
+
 
     j=0;
 
