@@ -1,4 +1,4 @@
-read xnor.blif
+read fa4.blif
 strash
 show
 lsv_xai
