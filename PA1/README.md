@@ -47,6 +47,8 @@ fclose(fout);
 ## Linux Tip
 
 ### 吃script
+
+創建腳本
 ```script=
 # vim abc_script
 read Xor.blif
@@ -54,11 +56,20 @@ strash
 lsv_xai
 ```
 
+在Linux變更腳本的權限
+```shell=
+sudo su
+chmod 777 abc_script
+ls -ai
+```
+
  ```chmod 777 abc_script```
  把腳本設定成```-rwxrwxrwx 1 root  root     30  十  24 20:35 abc_script```
- 直接在進入abc時打入腳本 
+ 
 
+<br>
 
+在進入abc時打入腳本
 ```shell=
 ./abc/abc <abc_script
 ```
@@ -66,6 +77,12 @@ lsv_xai
 ### diff
 比較兩個文件的差別，一行一行做比較
 [鳥哥的Linux教學](http://linux.vbird.org/linux_basic/0330regularex.php)
+
+
+## 擴充ABC套件、自己寫function
+1.加入擴充的資料夾，並在資料夾內部建好module.make，source需要用的.cpp檔
+2.到abc那一層的module.make中加入擴充資料夾的位置
+3.在abc那一層打開terminal然後make
 
 ## 使用的工具
 
