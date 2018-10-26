@@ -1,0 +1,23 @@
+.model fa4
+.inputs a0 a1 a2 a3 b0 b1 b2 b3 CIN
+.outputs s0 s1 s2 s3 COUT
+.subckt fa1 a=a0 b=b0 cin=CIN s=s0 cout=cout0
+.subckt fa1 a=a1 b=b1 cin=cout0 s=s1 cout=cout1
+.subckt fa1 a=a2 b=b2 cin=cout1 s=s2 cout=cout2
+.subckt fa1 a=a3 b=b3 cin=cout2 s=s3 cout=COUT
+.end
+
+.model fa1
+.inputs a b cin
+.outputs s cout
+.names a b cin s
+001 1
+010 1
+100 1
+111 1
+.names a b cin cout
+011 1
+101 1
+110 1
+111 1
+.end

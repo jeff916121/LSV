@@ -1,0 +1,4 @@
+read xnor.blif
+strash
+show
+lsv_xai
