@@ -14,12 +14,12 @@ A1.其實ABC就是一個平台，提供了很多API可以使用，把需要的fu
 
 Q2.如何讀進BLIF檔? 
 A2.兩個方法
-(1)在自己實作的funtion中可以呼叫Abc_CommandAbc9ReadBlif( Abc_Frame_t * pAbc, int argc, char ** argv )
-(2)直接在進入ABC平台前吃進一個script，使用read 4fa.blif的指令即可
+(1)在自己實作的funtion中可以呼叫```Abc_CommandAbc9ReadBlif( Abc_Frame_t * pAbc, int argc, char ** argv )```
+(2)直接在進入ABC平台前吃進一個script，使用```read 4fa.blif```的指令即可
 
 Q3.如何轉成AIG?
-(1)在自己實作的funtion中可以呼叫Abc_Revised_NtkStrash( Abc_Ntk_t * pNtkOld, Abc_Ntk_t * pNtkNew, int fAllNodes, int fRecord );
-(2)直接在進入ABC平台前吃進一個script，使用Strash的指令即可
+(1)在自己實作的funtion中可以呼叫```Abc_Revised_NtkStrash( Abc_Ntk_t * pNtkOld, Abc_Ntk_t * pNtkNew, int fAllNodes, int fRecord )```
+(2)直接在進入ABC平台前吃進一個script，使用```Strash```的指令即可
 
 Q4.如何寫檔?
 A4.如以下程式碼
@@ -34,15 +34,15 @@ fclose(fout);
 ### automatically performed by abc_script
 
 1. read the BLIF.file and the file name must be changed to test file name
-2. do the strash
-3. type "lsv_xai" command automatically
+2. do the ```strash```
+3. type ```lsv_xai``` command automatically
 
 ### performed by init.cpp
 
-4. it will output "pa1_d06943013.txt" file in the same directory
-5. ./../../abc <abc_script
+4. it will output ```pa1_d06943013.txt``` file in the same directory
+5. ```./../../abc <abc_script```
 
-**記得每次程式修改完都要記得在abc重新做一次make**
+**記得每次程式修改完都要記得在abc重新做一次```make```**
 
 ## Linux Tip
 
@@ -63,9 +63,12 @@ chmod 777 abc_script
 ls -ai
 ```
 
+<br>
+
  ```chmod 777 abc_script```
  把腳本設定成```-rwxrwxrwx 1 root  root     30  十  24 20:35 abc_script```
  
+[鳥哥Linux權限設定](http://linux.vbird.org/linux_basic/0210filepermission.php)
 
 <br>
 
@@ -80,13 +83,18 @@ ls -ai
 
 
 ## 擴充ABC套件、自己寫function
-1.加入擴充的資料夾，並在資料夾內部建好module.make，source需要用的.cpp檔
-2.到abc那一層的module.make中加入擴充資料夾的位置
-3.在abc那一層打開terminal然後make
+1.加入擴充的資料夾，並在資料夾內部建好```module.make```，source需要用的.cpp檔
+2.到abc那一層的```module.make```中加入擴充資料夾的位置
+3.在abc那一層打開terminal然後```make```
 
-## 使用的工具
+## 工具-Sublime
+* ```File```->```Open Folder```->選取abc的root folder
+* 可以直接在左邊資料夾，按```右鍵```，使用```Find in Folder```，就可以在Folder中尋找一些關鍵字
+* Trace技巧:滑鼠移到函數或者變數時，可以等著幾秒，它會hover出有reference到它的地方，可以左鍵點擊進去，或者可以按```F12```或在```Goto```欄點選```Goto Definition```，按```alt+-```可以回到剛剛的地方
 
-可以使用Abc_Ntk_t和Abc_Obj_t寫法的function
+## 使用的API
+
+可以使用```Abc_Ntk_t```和```Abc_Obj_t```寫法的function
 
 ### Abc_Ntk_t類的API
 #### 判斷Network是哪一類
@@ -123,7 +131,7 @@ typedef enum {
         if ( (pNode) == NULL ) {} else
 ```
 
-這邊是把Network的Obj iterate的抓出來，由於C不能在迴圈中宣告參數的型別和命字，因此呼叫前必須要定義空的pObj pointer 和 iterator i，如果操作指令只有單行，那就直接縮排接在後面，但如果多行的話，記得要包在方法的本體中
+這邊是把Network的Obj iterate的抓出來，由於```C```不能在迴圈中宣告參數的型別和命字，因此呼叫前必須要定義空的```pObj``` pointer 和 ```iterator i```，如果操作指令只有單行，那就直接縮排接在後面，但如果多行的話，記得要包在方法的本體中
 ```c=
 Abc_Ntk_t * pNtk  = Abc_FrameReadNtk(pAbc);
 Abc_Obj_t * pObj;
@@ -133,7 +141,7 @@ Abc_NtkForEachObj( pNtk, pObj, i ){
 }
 ```
 
-如果pNtk已經Strash過後，應該會按照DFS的演算法
+如果```pNtk```已經```Strash```過後，應該會按照```DFS```的演算法
 
 [DFS演算法](http://simonsays-tw.com/web/DFS-BFS/DepthFirstSearch.html)
 [BFS演算法](http://simonsays-tw.com/web/DFS-BFS/BreadthFirstSearch.html)
@@ -183,17 +191,17 @@ static inline Abc_Obj_t * Abc_ObjChild0( Abc_Obj_t * pObj )          { return Ab
 static inline Abc_Obj_t * Abc_ObjChild1( Abc_Obj_t * pObj )          { return Abc_ObjNotCond( Abc_ObjFanin1(pObj), Abc_ObjFaninC1(pObj) );  }
 ```
 
-* Abc_ObjFanin(pObj,i):需要傳入一個i當index，根據傳入的回傳pObj的第i個child所在的位置
-* Abc_ObjFanin0(pObj):回傳pObj的left child所在的位置
-* Abc_ObjFanin1(pObj):回傳pObj的right child所在的位置
-* Abc_ObjFaninC0(pObj):回傳1或0，為1代表pObj的left child以虛線接到pObj，為0代表pObj的left child以實線接到pObj，C代表complement
-* Abc_ObjFaninC1(pObj):回傳1或0，為1代表pObj的right child以虛線接到pObj，為0代表pObj的right child以實線接到pObj，C代表complement
-* Abc_ObjChild(pObj,i):需要傳入一個i當index，根據傳入的回傳pObj的第i個child所在的位置，包含了complement的資訊
-* Abc_ObjChild0(pObj):回傳pObj的left child所在的位置，包含了complement的資訊
-* Abc_ObjChild1(pObj):回傳pObj的right child所在的位置，包含了complement的資訊
+* ```Abc_ObjFanin(pObj,i)```:需要傳入一個```i```當index，根據傳入的回傳```pObj```的第i個child所在的位置
+* ```Abc_ObjFanin0(pObj)```:回傳```pObj```的left child所在的位置
+* ```Abc_ObjFanin1(pObj)```:回傳```pObj```的right child所在的位置
+* ```Abc_ObjFaninC0(pObj)```:回傳```1```或```0```，為```1```代表```pObj```的left child以虛線接到pObj，為```0```代表```pObj```的left child以實線接到pObj，C代表complement
+* ```Abc_ObjFaninC1(pObj)```:回傳```1```或```0```，為```1```代表pObj的right child以虛線接到```pObj```，為```0```代表```pObj```的right child以實線接到pObj，C代表complement
+* ```Abc_ObjChild(pObj,i)```:需要傳入一個```i```當index，根據傳入的回傳```pObj```的第i個child所在的位置，包含了complement的資訊
+* ```Abc_ObjChild0(pObj)```:回傳```pObj```的left child所在的位置，包含了complement的資訊
+* ```Abc_ObjChild1(pObj)```:回傳```pObj```的right child所在的位置，包含了complement的資訊
 
-* Abc_ObjFanin0(pObj)和Abc_ObjChild0(pObj)的差別是在，Abc_ObjChild0(pObj)偷偷藏了complement的資訊在pointer的末三碼，由於記憶體位置要是8的倍數，所以最後兩碼可以偷偷拿來用，但Abc_ObjChild0(pObj)回傳的記憶體位置不是合法的，如果要回傳合法的位置，要透過呼叫Abc_ObjRegular(pObj)來得到
-* Abc_ObjChild0(pObj)只是用來判斷邏輯用的，可以用來比較兩個child是不是同一個child，同時考慮了要指向同一個child還有它們的edge是否極性一致
+* ```Abc_ObjFanin0(pObj)```和```Abc_ObjChild0(pObj)```的差別是在，```Abc_ObjChild0(pObj)```偷偷藏了complement的資訊在pointer的```末三碼```，由於記憶體位置要是```8的倍數```，所以最後兩碼可以偷偷拿來用，但```Abc_ObjChild0(pObj)```回傳的記憶體位置不是合法的，如果要回傳合法的位置，要透過呼叫```Abc_ObjRegular(pObj)```來得到
+* ```Abc_ObjChild0(pObj)```只是用來判斷邏輯用的，可以用來比較兩個child是不是同一個child，同時考慮了要指向同一個child還有它們的edge是否極性一致
 
 #### 與Obj極性有關的判斷
 ```c=
@@ -204,8 +212,8 @@ static inline Abc_Obj_t * Abc_ObjNot( Abc_Obj_t * p )                { return (A
 static inline Abc_Obj_t * Abc_ObjNotCond( Abc_Obj_t * p, int c )     { return (Abc_Obj_t *)((ABC_PTRUINT_T)p ^  (ABC_PTRUINT_T)(c!=0)); }
 ```
 
-* Abc_ObjNotCond(pObj,c)是有條件的做complement
-* Abc_ObjRegular(pObj)是用來正規化pObj的記憶體位置用的
+* ```Abc_ObjNotCond(pObj,c)```是有條件的做complement
+* ```Abc_ObjRegular(pObj)```是用來正規化```pObj```的記憶體位置用的
 
 
 
@@ -245,7 +253,7 @@ int Aig_ObjRecognizeExor( Aig_Obj_t * pObj, Aig_Obj_t ** ppFan0, Aig_Obj_t ** pp
 }
 ```
 
-可以用這個方法，但要小心它是Aig_Obj_t的pointer，不是Abc_Obj_t，而且它不能偵測到XNOR，只能偵測XOR，所以要把程式碼，這一段的判斷改掉
+可以用這個方法，但要小心它是```Aig_Obj_t```的pointer，不是```Abc_Obj_t```，而且它不能偵測到XNOR，只能偵測XOR，所以要把程式碼，這一段的判斷改掉
 
 ```
 if ( Aig_ObjFaninC0(p0) == Aig_ObjFaninC0(p1) || Aig_ObjFaninC1(p0) == Aig_ObjFaninC1(p1) )
@@ -354,8 +362,8 @@ struct registrar
 
 ```
 
-Abc_FrameReadNtk(pAbc)是把現在的Network從pAbc這個Framework中讀出
-Abc_NtkForEachObj( pNtk, pObj, i )是一個內建寫好的迴圈，會把pNtk中的所有Object，用DFS的演算法一一取出，放到pObj指到的地方，i是迴圈的iterator，由於c的迴圈中不能宣告變數，所以必須要把pObj和i先宣告好，在call方法
+```Abc_FrameReadNtk(pAbc)```是把現在的Network從```pAbc```這個Framework中讀出
+```Abc_NtkForEachObj( pNtk, pObj, i )```是一個內建寫好的迴圈，會把```pNtk```中的所有Object，用```DFS```的演算法一一取出，放到```pObj```指到的地方，```i```是迴圈的```iterator```，由於C的迴圈中不能宣告變數，所以必須要把```pObj```和i先宣告好，在call方法
 
 ```c=
 Abc_Obj_t * pObj;
@@ -365,9 +373,9 @@ Abc_NtkForEachObj( pNtk, pObj, i ){}
 
 要做迴圈的instructions如果不只一行時要記得包在body裡面，單行則不用考慮
 
-Abc_ObjFanin0(pObj)會把pObj的left child取出回傳，Abc_ObjFanin1(pObj)會把pObj的right child取出回傳，要小心如果沒有child則不能call這個方法，例如ABC_OBJ_CONST1、ABC_OBJ_PI
-而做完Strash之後，每個Node都是AND gate，所以通常都會有lc和rc
-另外如果lc或rc屬於PI，則它絕對不會是XOR或XNOR的gate，所以可以直接找下一個node
+```Abc_ObjFanin0(pObj)```會把pObj的left child取出回傳，```Abc_ObjFanin1(pObj)```會把pObj的right child取出回傳，要小心如果沒有child則不能call這個方法，例如```ABC_OBJ_CONST1```、```ABC_OBJ_PI```
+ 而做完```Strash```之後，每個Node都是AND gate，所以通常都會有```lc```和```rc```
+另外如果```lc```或```rc```屬於```PI```，則它絕對不會是XOR或XNOR的gate，所以可以直接找下一個node
 
 ```c=
 if(Abc_ObjType(pObj) == ABC_OBJ_NODE){                           
@@ -379,7 +387,7 @@ if(Abc_ObjType(pObj) == ABC_OBJ_NODE){
             }   
 ```
 
-可以先從簡單的XOR或XNOR gate下手，看它被ABC吃掉之後做Strash會有甚麼結果，再去判斷它有甚麼特性
+可以先從簡單的XOR或XNOR gate下手，看它被ABC吃掉之後做```Strash```會有甚麼結果，再去判斷它有甚麼特性
 
 
 ![XOR](https://i.imgur.com/GuNqps1.png)
@@ -391,14 +399,14 @@ if(Abc_ObjType(pObj) == ABC_OBJ_NODE){
 
 
 我們可以從XOR的top node開始看，它的left child和right child都必須要有相同的complement，其實也未必見得都要是虛線，都是實線時，如果在輸出再取complement，有可能是XNOR
-XOR的top node，在lc和rc一定有兩組共同的輸入來源，換句話說lclc=rclc且 lcrc=rcrc 或者是 lclc=rcrc且lcrc=rclc
-另外當lc、rc各自的共同輸入來源的complement相同時為XNOR，相反時為XOR
+XOR的top node，在lc和rc一定有兩組共同的輸入來源，換句話說```lclc=rclc```且 ```lcrc=rcrc``` 或者是 ```lclc=rcrc```且```lcrc=rclc```
+另外當```lc```、```rc```各自的共同輸入來源的complement相同時為XNOR，相反時為XOR
 
-(Abc_ObjFaninC0(pObj)的0代表left child，C代表is complement?
-當(Abc_ObjFaninC0(pObj)=1，代表pObj的left child是以虛線接到pObj
-(Abc_ObjFaninC0(pObj)=0則是left child以實線接到pObj
-而Abc_ObjFaninC1(pObj)可得知pObj的right child是以虛線(為1)還是實線(為0)接過來的
-Abc_ObjId(pObj)會回傳pObj的Id，在Strash的過程中，有呼叫Abc_NtkForEachObj( pNtk, pObj, i )，因此Id大致上會按照DFS的演算法去排順序
+```Abc_ObjFaninC0(pObj)```的0代表left child，C代表is complement?
+當```Abc_ObjFaninC0(pObj)=1```，代表pObj的left child是以虛線接到pObj
+```Abc_ObjFaninC0(pObj)=0```則是left child以實線接到pObj
+而```Abc_ObjFaninC1(pObj)```可得知pObj的right child是以虛線(為1)還是實線(為0)接過來的
+```Abc_ObjId(pObj)```會回傳pObj的Id，在Strash的過程中，有呼叫```Abc_NtkForEachObj( pNtk, pObj, i )```，因此Id大致上會按照```DFS```的演算法去排順序
 
 ```c=
 if(Abc_ObjType(pObj) == ABC_OBJ_NODE){                           
