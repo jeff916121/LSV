@@ -1,0 +1,24 @@
+#smallest 2 minterms:
+0011
+0110
+
+#primes:
+--11
+;
+-11-
+;
+ 
+#largest 2 minterms:
+1110
+1111
+
+#primes:
+11--
+-11-
+;
+11--
+1--1
+-11-
+--11
+;
+

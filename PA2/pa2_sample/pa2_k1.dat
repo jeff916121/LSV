@@ -1,0 +1,15 @@
+#smallest 1 minterms:
+0001
+
+#primes:
+00-1
+;
+
+#largest 1 minterms:
+1111
+
+#primes:
+111-
+;
+
+
